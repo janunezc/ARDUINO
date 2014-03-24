@@ -7,7 +7,7 @@
  
 int blink_led_dp_13 = 13; /* BLUE:   I use this LED to show a start and end point in the program. */
 int _reset_10 = 10;       /* WHITE:  Performs a low-high-low to reset contents of the SR */
-int shift_clock_11 = 8;  /* YELLOW: Performs a LHL to shift contents of the register and fetch the data present in DATA SERIAL PIN*/
+int shift_clock_11 = 11;  /* YELLOW: Performs a LHL to shift contents of the register and fetch the data present in DATA SERIAL PIN*/
 int latch_clock_12 = 12;  /* BLUE:  Performs a LHL to update Parallel Outputs with serial contents*/
 
 int _output_enable_13 = 13; /*OPTIONAL:  Normally pin 13  in the IC can be grounded.*/
@@ -36,9 +36,6 @@ void loop() {
   injectBit(HIGH);//4
   injectBit(HIGH);//5
   injectBit(HIGH);//6
-  injectBit(HIGH);//7
-
-
 }
 
 void setPinModes(){
