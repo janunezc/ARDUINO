@@ -6,11 +6,16 @@
  */
  
 int blink_led_dp_13 = 13; /* BLUE:   I use this LED to show a start and end point in the program. */
-int _reset_10 = 10;       /* WHITE:  Performs a low-high-low to reset contents of the SR */
-int shift_clock_11 = 11;  /* YELLOW: Performs a LHL to shift contents of the register and fetch the data present in DATA SERIAL PIN*/
-int latch_clock_12 = 12;  /* BLUE:  Performs a LHL to update Parallel Outputs with serial contents*/
+int _reset_10 = 10;       /* WHITE:  Performs a high-low to reset contents of the SR */
 
-int _output_enable_13 = 13; /*OPTIONAL:  Normally pin 13  in the IC can be grounded.*/
+int shift_clock_11 = 8;  /* YELLOW: Performs a H-L to shift contents of the register and fetch the data present in DATA SERIAL PIN*/
+                          /*NOTICE!!!
+                          WHEN PWM PORT IS USED HERE (11 FOR INSTANCE) THE SHIFT REGISTER IC MAY GET MORE THAN ONE SHIFT EXECUTIONS PER L-H-L TRANSITION... WHICH SOUNDS LIKE A BUG SOMEWHERE. USE PIN 8 (NON PWM)
+                          FORM MORE ACCURATE RESULTS.
+                          */
+
+int latch_clock_12 = 12;  /* BLUE:  Performs a H-L to update Parallel Outputs with serial contents*/
+
 int data_serial_14_9 = 9;   /*ORANGE:    H or L should be present in the pin 14 of the IC when Shift-Clock is actuated. */
 
 int signalDelay = 10; /*DELAY BETWEEN SIGNAL CHANGES TO GIVE THE CHIP TIME TO REACT */
@@ -44,9 +49,7 @@ void setPinModes(){
   pinMode(_reset_10 , OUTPUT); /*LOW DOES RESET, HIGH ENABLES*/    
   pinMode(shift_clock_11 , OUTPUT);  /*HIGH SHIFTS*/
   pinMode(latch_clock_12 , OUTPUT); /*HIGH Stores*/
-  pinMode(data_serial_14_9 , OUTPUT); /*PUT 1 or 0 just before setting latch_clock_12 to HIGH*/
-  pinMode(_output_enable_13 , OUTPUT); /*HIGH enables*/
-  
+  pinMode(data_serial_14_9 , OUTPUT); /*PUT 1 or 0 just before setting latch_clock_12 to HIGH*/ 
 }
 void blinkSignal(){
   /*INDICATES ROUTINE START*/
@@ -63,7 +66,6 @@ void resetRegisterControls(){
   digitalWrite(_reset_10, HIGH);
   digitalWrite(shift_clock_11, LOW);
   digitalWrite(latch_clock_12, LOW); 
-  digitalWrite(_output_enable_13, LOW);
   digitalWrite(data_serial_14_9, LOW);
   delay(signalDelay);  
 }
