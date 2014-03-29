@@ -4,7 +4,11 @@
     Operates a Shift Register 74HC595N to light leds in order one by one.
     
  */
- 
+
+int led_verde = 2;
+int led_amarillo = 3;
+int led_rojo = 4;
+
 int blink_led_dp_13 = 13; /* BLUE:   I use this LED to show a start and end point in the program. */
 int _reset_10 = 10;       /* WHITE:  Performs a high-low to reset contents of the SR */
 
@@ -29,10 +33,15 @@ void setup() {
 void loop() {
   
   blinkSignal();
+  
+  digitalWrite(led_verde, HIGH); delay(1000);  
     
   /*FIRST OF ALL - RESET THE CHIP */
   resetRegisterControls();
   resetRegister();  
+  
+  digitalWrite(led_amarillo, HIGH);   
+  
   setByte (HIGH,LOW,LOW,LOW,LOW,LOW,LOW); //0
   setByte (HIGH,HIGH,HIGH,HIGH,LOW,LOW,HIGH); //1
   setByte (LOW,HIGH,LOW,LOW,HIGH,LOW,LOW);//2
@@ -47,8 +56,16 @@ void loop() {
   setByte (LOW,LOW,LOW,LOW,LOW,HIGH,HIGH);//b
   setByte (HIGH,LOW,LOW,LOW,HIGH,HIGH,LOW);//c
   setByte (LOW,HIGH,LOW,LOW,LOW,LOW,HIGH);//d
-  setByte (LOW,LOW,LOW,LOW,HIGH,LOW,LOW);//e
+  setByte (LOW,LOW,LOW,LOW,HIGH,HIGH,LOW);//e
   setByte (LOW,LOW,LOW,HIGH,HIGH,HIGH,LOW);//f
+  
+
+ digitalWrite(led_rojo, HIGH); delay(5000);  
+ 
+ 
+ digitalWrite(led_verde, LOW); delay(100);
+ digitalWrite(led_amarillo, LOW); delay(100);
+ digitalWrite(led_rojo, LOW); delay(100);  
         
          
 }
@@ -72,6 +89,11 @@ delay(1000);
 
 void setPinModes(){
   /*SET PINS AS OUTPUTS */
+  
+  pinMode(led_rojo, OUTPUT);
+  pinMode(led_amarillo, OUTPUT);
+  pinMode(led_verde, OUTPUT);
+  
   pinMode(blink_led_dp_13, OUTPUT);
   pinMode(_reset_10 , OUTPUT); /*LOW DOES RESET, HIGH ENABLES*/    
   pinMode(shift_clock_11 , OUTPUT);  /*HIGH SHIFTS*/
@@ -118,12 +140,12 @@ void injectBit(boolean bitValue){
 }
 
 void setDataBit(boolean bitValue){
-  digitalWrite(data_serial_14_9, bitValue);  delay(signalDelay); 
+  digitalWrite(data_serial_14_9, bitValue);  delay(1); 
 }
 
 void doShift(){
-   digitalWrite(shift_clock_11, HIGH); delay(signalDelay); 
-   digitalWrite(shift_clock_11, LOW); delay(signalDelay);   
+   digitalWrite(shift_clock_11, HIGH); delay(1); 
+   digitalWrite(shift_clock_11, LOW); delay(1);   
 }
 
 void doLatch(){
