@@ -8,7 +8,7 @@
 int blink_led_dp_13 = 13; /* BLUE:   I use this LED to show a start and end point in the program. */
 int _reset_10 = 10;       /* WHITE:  Performs a high-low to reset contents of the SR */
 
-int shift_clock_11 = 8;  /* YELLOW: Performs a H-L to shift contents of the register and fetch the data present in DATA SERIAL PIN*/
+int shift_clock_11 = 11;  /* YELLOW: Performs a H-L to shift contents of the register and fetch the data present in DATA SERIAL PIN*/
                           /*NOTICE!!!
                           WHEN PWM PORT IS USED HERE (11 FOR INSTANCE) THE SHIFT REGISTER IC MAY GET MORE THAN ONE SHIFT EXECUTIONS PER L-H-L TRANSITION... WHICH SOUNDS LIKE A BUG SOMEWHERE. USE PIN 8 (NON PWM)
                           FORM MORE ACCURATE RESULTS.
@@ -36,11 +36,13 @@ void loop() {
   
   /*Inject bits into the register*/
   injectBit(HIGH);//1
-  injectBit(HIGH);//2
-  injectBit(HIGH);//3
-  injectBit(HIGH);//4
-  injectBit(HIGH);//5
-  injectBit(HIGH);//6
+  injectBit(LOW);//2
+  injectBit(LOW);//3
+  injectBit(LOW);//4
+  injectBit(LOW);//5
+  injectBit(LOW);//6
+    injectBit(LOW);//6
+      injectBit(LOW);//6
 }
 
 void setPinModes(){
